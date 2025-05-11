@@ -1,0 +1,697 @@
+/* --- Variables de Color (Basadas en styles.css proporcionado por el usuario) --- */
+:root {
+	--bg-light: #f4f7f6;
+	/* Default light background from user's styles.css */
+	--text-light: #333;
+	/* Default dark text from user's styles.css */
+	--card-bg-light: #ffffff;
+	/* White background for cards */
+	--border-light: #ddd;
+	/* Light border color */
+	--header-text-light: #ff6600;
+	/* Orange for main titles */
+	--subheader-text-light: #333;
+	/* Dark text for subtitles */
+	--button-bg-light: #ff6600;
+	/* Orange for buttons */
+	--button-text-light: #ffffff;
+	/* White text for buttons */
+	--button-border-light: #cc5200;
+	/* Darker orange for button border */
+	--button-hover-bg-light: #cc5200;
+	/* Darker orange for button hover */
+	--button-hover-border-light: #993f00;
+	/* Even darker orange for button hover border */
+	--tab-bg-light: transparent;
+	/* Transparent background for inactive tabs */
+	--tab-text-light: #555;
+	/* Dark gray for inactive tab text */
+	--tab-active-bg-light: transparent;
+	/* Transparent background for active tabs */
+	--tab-active-text-light: #ff6600;
+	/* Orange for active tab text */
+	--tab-border-active-light: #ff6600;
+	/* Orange bottom border for active tab */
+	--code-bg-light: #2d3748;
+	/* Dark background for code blocks (similar to dark card) */
+	--code-text-light: #e2e8f0;
+	/* Light text for code blocks */
+	--link-color: #ff6600;
+	/* Orange for links */
+
+	/* Cell colors for light mode */
+	--cell-numeric-bg-light: #e0f2fe;
+	--cell-numeric-text-light: #075985;
+	--cell-character-bg-light: #fefce8;
+	--cell-character-text-light: #713f12;
+	--cell-logical-bg-light: #f0fdf4;
+	--cell-logical-text-light: #15803d;
+	--cell-homogeneous-bg-light: #eef2ff;
+	--cell-homogeneous-text-light: #3730a3;
+	--cell-integer-bg-light: #f0fdfa;
+	--cell-integer-text-light: #0d9488;
+	--cell-double-bg-light: var(--cell-numeric-bg-light);
+	--cell-double-text-light: var(--cell-numeric-text-light);
+	--cell-factor-bg-light: #fee2e2;
+	--cell-factor-text-light: #991b1b;
+	--cell-factor-value-bg-light: #fff7ed;
+	--cell-factor-value-text-light: #9a3412;
+
+
+	/* --- Dark Mode Variables (Basadas en styles.css proporcionado por el usuario) --- */
+	--bg-dark: #1a202c;
+	/* Dark background from user's styles.css */
+	--text-dark: #e2e8f0;
+	/* Light text from user's styles.css */
+	--card-bg-dark: #2d3748;
+	/* Dark card background from user's styles.css */
+	--border-dark: #4a5568;
+	/* Darker border from user's styles.css */
+	--header-text-dark: #ff6600;
+	/* Orange for main titles */
+	--subheader-text-dark: #e2e8f0;
+	/* Light text for subtitles */
+	--button-bg-dark: #ff6600;
+	/* Orange for buttons */
+	--button-text-dark: #ffffff;
+	/* White text for buttons */
+	--button-border-dark: #cc5200;
+	/* Darker orange for button border */
+	--button-hover-bg-dark: #cc5200;
+	/* Darker orange for button hover */
+	--button-hover-border-dark: #993f00;
+	/* Even darker orange for button hover border */
+	--tab-bg-dark: transparent;
+	--tab-text-dark: #b0b0b0;
+	/* Light gray for inactive tab text */
+	--tab-active-bg-dark: transparent;
+	--tab-active-text-dark: #ff6600;
+	/* Orange for active tab text */
+	--tab-border-active-dark: #ff6600;
+	/* Orange bottom border for active tab */
+	--code-bg-dark: #1a202c;
+	/* Even darker background for code blocks */
+	--code-text-dark: #e2e8f0;
+	/* Light text for code blocks */
+	--link-color-dark: #ff6600;
+	/* Orange for links */
+
+	/* Cell colors for dark mode */
+	--cell-numeric-bg-dark: #0c4a6e;
+	--cell-numeric-text-dark: #bae6fd;
+	--cell-character-bg-dark: #422006;
+	--cell-character-text-dark: #fef08a;
+	--cell-logical-bg-dark: #052e16;
+	--cell-logical-text-dark: #86efac;
+	--cell-homogeneous-bg-dark: #312e81;
+	--cell-homogeneous-text-dark: #c7d2fe;
+	--cell-integer-bg-dark: #115e59;
+	--cell-integer-text-dark: #99f6e4;
+	--cell-double-bg-dark: var(--cell-numeric-bg-dark);
+	--cell-double-text-dark: var(--cell-numeric-text-dark);
+	--cell-factor-bg-dark: #7f1d1d;
+	--cell-factor-text-dark: #fecaca;
+	--cell-factor-value-bg-dark: #7c2d12;
+	--cell-factor-value-text-dark: #fed7aa;
+}
+
+body {
+	font-family: 'Inter', sans-serif;
+	background-color: var(--bg-light);
+	color: var(--text-light);
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+	background-color: var(--bg-dark);
+	color: var(--text-dark);
+}
+
+/* Tab Styles adapted from user's styles.css */
+.tab-button-container {
+	border-bottom: 1px solid var(--border-light);
+	transition: border-color 0.3s ease;
+	display: flex;
+	overflow-x: auto;
+	padding-bottom: 1px;
+	/* Add a little padding for scrollbar if it appears */
+}
+
+body.dark-mode .tab-button-container {
+	border-bottom-color: var(--border-dark);
+}
+
+.tab-button {
+	padding: 10px 15px;
+	cursor: pointer;
+	background-color: var(--tab-bg-light);
+	color: var(--tab-text-light);
+	font-weight: bold;
+	border: none;
+	border-bottom: 3px solid transparent;
+	transition: color 0.3s ease, border-bottom-color 0.3s ease, background-color 0.3s ease;
+	white-space: nowrap;
+	/* margin-bottom: -1px; /* CORRECCIÓN: Eliminado para evitar problemas de scroll vertical */
+}
+
+.tab-button:hover {
+	color: var(--tab-active-text-light);
+	border-bottom-color: var(--tab-active-text-light);
+}
+
+.tab-button.active {
+	color: var(--tab-active-text-light);
+	border-bottom-color: var(--tab-border-active-light);
+	background-color: var(--tab-active-bg-light);
+}
+
+body.dark-mode .tab-button {
+	color: var(--tab-text-dark);
+}
+
+body.dark-mode .tab-button:hover {
+	color: var(--tab-active-text-dark);
+	border-bottom-color: var(--tab-active-text-dark);
+}
+
+body.dark-mode .tab-button.active {
+	color: var(--tab-active-text-dark);
+	border-bottom-color: var(--tab-border-active-dark);
+	background-color: var(--tab-active-bg-dark);
+}
+
+
+.tab-content {
+	display: none;
+	padding: 1rem 0;
+	border-radius: 8px;
+	/* margin-top: 1px; /* No longer needed due to margin-bottom removal from tab-button */
+}
+
+.tab-content.active {
+	display: block;
+}
+
+/* Card Style adapted from .quiz-container */
+.data-structure-card,
+.numeric-type-card,
+.datatype-comparison-card {
+	background-color: var(--card-bg-light);
+	border: 1px solid var(--border-light);
+	padding: 30px;
+	border-radius: 15px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 2rem;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .data-structure-card,
+body.dark-mode .numeric-type-card,
+body.dark-mode .datatype-comparison-card {
+	background-color: var(--card-bg-dark);
+	border-color: var(--border-dark);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+.table-like {
+	border-collapse: collapse;
+	width: auto;
+	margin: 1rem auto;
+	min-width: 200px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table-like th,
+.table-like td {
+	border: 1px solid var(--border-light);
+	padding: 0.75rem;
+	text-align: center;
+	min-width: 60px;
+	height: 40px;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.table-like th {
+	background-color: #e9ecef;
+	font-weight: 600;
+	color: var(--text-light);
+}
+
+body.dark-mode .table-like th {
+	background-color: #343a40;
+	color: var(--text-dark);
+}
+
+/* Cell specific colors */
+.cell-numeric {
+	background-color: var(--cell-numeric-bg-light);
+	color: var(--cell-numeric-text-light);
+}
+
+.cell-character {
+	background-color: var(--cell-character-bg-light);
+	color: var(--cell-character-text-light);
+}
+
+.cell-logical {
+	background-color: var(--cell-logical-bg-light);
+	color: var(--cell-logical-text-light);
+}
+
+.cell-homogeneous {
+	background-color: var(--cell-homogeneous-bg-light);
+	color: var(--cell-homogeneous-text-light);
+}
+
+.cell-integer {
+	background-color: var(--cell-integer-bg-light);
+	color: var(--cell-integer-text-light);
+}
+
+.cell-double {
+	background-color: var(--cell-double-bg-light);
+	color: var(--cell-double-text-light);
+}
+
+.cell-factor {
+	background-color: var(--cell-factor-bg-light);
+	color: var(--cell-factor-text-light);
+}
+
+.cell-factor-value {
+	background-color: var(--cell-factor-value-bg-light);
+	color: var(--cell-factor-value-text-light);
+}
+
+body.dark-mode .cell-numeric {
+	background-color: var(--cell-numeric-bg-dark);
+	color: var(--cell-numeric-text-dark);
+}
+
+body.dark-mode .cell-character {
+	background-color: var(--cell-character-bg-dark);
+	color: var(--cell-character-text-dark);
+}
+
+body.dark-mode .cell-logical {
+	background-color: var(--cell-logical-bg-dark);
+	color: var(--cell-logical-text-dark);
+}
+
+body.dark-mode .cell-homogeneous {
+	background-color: var(--cell-homogeneous-bg-dark);
+	color: var(--cell-homogeneous-text-dark);
+}
+
+body.dark-mode .cell-integer {
+	background-color: var(--cell-integer-bg-dark);
+	color: var(--cell-integer-text-dark);
+}
+
+body.dark-mode .cell-double {
+	background-color: var(--cell-double-bg-dark);
+	color: var(--cell-double-text-dark);
+}
+
+body.dark-mode .cell-factor {
+	background-color: var(--cell-factor-bg-dark);
+	color: var(--cell-factor-text-dark);
+}
+
+body.dark-mode .cell-factor-value {
+	background-color: var(--cell-factor-value-bg-dark);
+	color: var(--cell-factor-value-text-dark);
+}
+
+
+.cell-highlight-temp {
+	background-color: #ffc107 !important;
+	color: #212529 !important;
+	transition: background-color 0.2s ease-out;
+}
+
+body.dark-mode .cell-highlight-temp {
+	background-color: #ffca2c !important;
+	color: #1a202c !important;
+}
+
+.th-highlight-temp {
+	background-color: #ffe082 !important;
+	color: #212529 !important;
+	transition: background-color 0.2s ease-out, color 0.2s ease-out;
+}
+
+body.dark-mode .th-highlight-temp {
+	background-color: #ffc107 !important;
+	color: #1a202c !important;
+}
+
+.details {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+	margin-top: 1rem;
+	border-top: 1px solid var(--border-light);
+	padding-top: 0;
+}
+
+.details.show {
+	max-height: 2500px;
+	padding-top: 1rem;
+}
+
+/* Button Style adapted from .button in user's styles.css */
+.toggle-button,
+.create-button,
+.action-button,
+#darkModeToggle {
+	background-color: var(--button-bg-light);
+	color: var(--button-text-light);
+	border: 2px solid var(--button-border-light);
+	padding: 10px 20px;
+	border-radius: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s, transform 0.1s, color 0.3s, border-color 0.3s;
+	font-weight: bold;
+	margin-right: 0.5rem;
+	margin-top: 0.5rem;
+	display: inline-block;
+	text-align: center;
+}
+
+.toggle-button:hover,
+.create-button:hover,
+.action-button:hover,
+#darkModeToggle:hover {
+	background-color: var(--button-hover-bg-light);
+	border-color: var(--button-hover-border-light);
+}
+
+.create-button:active,
+.action-button:active,
+#darkModeToggle:active {
+	transform: scale(0.98);
+}
+
+.create-button:disabled,
+.action-button:disabled {
+	background-color: #adb5bd;
+	border-color: #6c757d;
+	color: #f8f9fa;
+	cursor: not-allowed;
+}
+
+body.dark-mode .create-button:disabled,
+body.dark-mode .action-button:disabled {
+	background-color: #495057;
+	border-color: #343a40;
+	color: #6c757d;
+}
+
+
+.code-block {
+	background-color: var(--code-bg-light);
+	color: var(--code-text-light);
+	padding: 1rem;
+	border-radius: 8px;
+	overflow-x: auto;
+	font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+	font-size: 0.9em;
+	margin-top: 0.75rem;
+	border: 1px solid var(--border-light);
+}
+
+body.dark-mode .code-block {
+	border-color: var(--border-dark);
+	background-color: var(--code-bg-dark);
+	color: var(--code-text-dark);
+}
+
+.code-block pre {
+	margin: 0;
+}
+
+/* Titles adapted from user's styles.css */
+h1 {
+	color: var(--header-text-light);
+	font-size: 2.5em;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+body.dark-mode h1 {
+	color: var(--header-text-dark);
+}
+
+header>p {
+	font-size: 1em;
+	color: #555;
+	margin-bottom: 20px;
+}
+
+body.dark-mode header>p {
+	color: #b0b0b0;
+}
+
+
+h2 {
+	font-size: 1.75rem;
+	font-weight: bold;
+	color: var(--header-text-light);
+	margin-bottom: 0.75rem;
+}
+
+body.dark-mode h2 {
+	color: var(--header-text-dark);
+}
+
+h3 {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: var(--header-text-light);
+	margin-top: 1.25rem;
+	margin-bottom: 15px;
+	text-align: left;
+}
+
+body.dark-mode h3 {
+	color: var(--header-text-dark);
+}
+
+h4 {
+	font-size: 1.1rem;
+	font-weight: bold;
+	color: var(--subheader-text-light);
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+body.dark-mode h4 {
+	color: var(--subheader-text-dark);
+}
+
+.animation-status {
+	font-style: italic;
+	color: var(--button-bg-light);
+	height: 1.5em;
+	margin-top: 0.5rem;
+	text-align: center;
+}
+
+body.dark-mode .animation-status {
+	color: var(--button-bg-dark);
+}
+
+.array-perspective-container {
+	perspective: 1200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 350px;
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.array-stack {
+	position: relative;
+	transform-style: preserve-3d;
+	transition: transform 0.7s ease-out;
+}
+
+.array-layer-3d {
+	border: 2px solid var(--button-bg-light);
+	border-radius: 8px;
+	background-color: var(--card-bg-light);
+	padding: 0.5rem;
+	position: absolute;
+	backface-visibility: hidden;
+	transform-origin: center center;
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+	opacity: 0;
+	transition: opacity 0.6s ease, transform 0.6s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .array-layer-3d {
+	border-color: var(--button-bg-dark);
+}
+
+.cell-animated-ظهور {
+	opacity: 0;
+	transform: scale(0.3) rotate(-15deg);
+	transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.df-col-animated-entrada {
+	opacity: 0;
+	transform: translateY(-20px);
+	transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.vector-display {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	padding: 1rem;
+	border: 1px dashed #adb5bd;
+	border-radius: 8px;
+	margin-top: 0.5rem;
+	min-height: 50px;
+	background-color: #e9ecef;
+	transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .vector-display {
+	border-color: #495057;
+	background-color: #343a40;
+}
+
+.vector-element {
+	padding: 0.5rem 1rem;
+	border-radius: 6px;
+	font-family: 'Menlo', 'Monaco', Courier, monospace;
+	font-size: 0.95em;
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.levels-display {
+	margin-top: 1rem;
+	padding: 1rem;
+	background-color: var(--tab-bg-light);
+	border-radius: 8px;
+	transition: background-color 0.3s ease;
+}
+
+body.dark-mode .levels-display {
+	background-color: #2d3748;
+}
+
+.level-tag {
+	display: inline-block;
+	padding: 0.3rem 0.8rem;
+	margin: 0.25rem;
+	border-radius: 1rem;
+	font-size: 0.9em;
+	opacity: 0;
+	transform: scale(0.5);
+	transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Text inside cards */
+.data-structure-card p,
+.numeric-type-card p,
+.datatype-comparison-card p,
+.data-structure-card ul li,
+.numeric-type-card ul li,
+.datatype-comparison-card ul li {
+	color: var(--text-light);
+	margin-bottom: 0.75rem;
+}
+
+body.dark-mode .data-structure-card p,
+body.dark-mode .numeric-type-card p,
+body.dark-mode .datatype-comparison-card p,
+body.dark-mode .data-structure-card ul li,
+body.dark-mode .numeric-type-card ul li,
+body.dark-mode .datatype-comparison-card ul li {
+	color: var(--text-dark);
+}
+
+/* R code snippets below visualizations */
+code.text-sm {
+	color: #495057;
+	display: block;
+	margin-top: 0.25rem;
+	font-size: 0.85em;
+}
+
+body.dark-mode code.text-sm {
+	color: #adb5bd;
+}
+
+/* Links */
+a {
+	color: var(--link-color);
+	font-weight: 500;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+body.dark-mode a {
+	color: var(--link-color-dark);
+}
+
+/* Footer */
+footer {
+	border-top: 1px solid var(--border-light);
+	color: #555;
+	text-align: center;
+	font-size: 0.9em;
+	padding-top: 20px;
+	margin-top: 30px;
+}
+
+body.dark-mode footer {
+	border-top-color: var(--border-dark);
+	color: #b0b0b0;
+}
+
+/* Header controls (tabs and dark mode toggle) */
+.header-controls-container {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1.5rem;
+}
+
+/* .tab-button-container is already defined above with overflow-x: auto */
+/* No changes needed for .tab-button-container specific to this section, already handled */
+
+#darkModeToggle {
+	margin-top: 0;
+	align-self: flex-start;
+}
+
+@media (min-width: 640px) {
+
+	/* sm breakpoint */
+	.header-controls-container {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		/* CORRECCIÓN: Cambiado de flex-end a center */
+	}
+
+	.tab-button-container {
+		margin-bottom: 0;
+	}
+
+	#darkModeToggle {
+		margin-left: 1rem;
+		align-self: center;
+	}
+}

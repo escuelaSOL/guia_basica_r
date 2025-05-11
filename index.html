@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Visualización Avanzada: Estructuras y Tipos de Datos en R</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="p-4 md:p-8">
+
+	<header class="text-center mb-6">
+		<h1 class="text-3xl md:text-4xl font-bold">Visualización Avanzada: Estructuras y Tipos de Datos en R</h1>
+		<p class="text-lg text-slate-600 dark:text-slate-400 mt-2">Una guía interactiva y experta.</p>
+	</header>
+
+	<div
+		class="max-w-6xl mx-auto mb-8 flex flex-col sm:flex-row justify-between items-center header-controls-container">
+		<div class="tab-button-container mb-4 sm:mb-0">
+			<button id="tab-btn-vectores-df" class="tab-button" onclick="openTab(event, 'vectoresDfTab')">Vectores y
+				Data Frames</button>
+			<button id="tab-btn-estructuras" class="tab-button" onclick="openTab(event, 'estructurasTab')">Otras
+				Estructuras</button>
+			<button id="tab-btn-tipos" class="tab-button" onclick="openTab(event, 'tiposNumericosTab')">Tipos
+				Numéricos</button>
+			<button id="tab-btn-factorchar" class="tab-button" onclick="openTab(event, 'factorCharTab')">Factor vs.
+				Character</button>
+		</div>
+		<button id="darkModeToggle" class="ml-0 sm:ml-4 action-button">Modo Oscuro</button>
+	</div>
+
+	<main class="max-w-6xl mx-auto">
+		<div id="vectoresDfTab" class="tab-content">
+			<section class="datatype-comparison-card" id="vectores-intro">
+				<h2>Vectores en R</h2>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">
+					En R, un <strong>vector atómico</strong> es la estructura de datos más fundamental. Se define como
+					una secuencia ordenada de elementos que deben ser todos del <strong>mismo tipo de dato básico
+						(atómico)</strong>.
+					Esto significa que un vector no puede mezclar, por ejemplo, números y texto directamente; si se
+					intenta, R realizará una coerción para convertir todos los elementos al tipo más general (usualmente
+					a carácter).
+				</p>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">
+					Los seis tipos atómicos básicos en R, de los cuales los primeros cuatro son los más usados en
+					análisis de datos, son:
+				</p>
+				<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-2 ml-4">
+					<li><strong><code>logical</code>:</strong> Contiene valores booleanos (<code>TRUE</code>,
+						<code>FALSE</code>) y también <code>NA</code> (Not Available - dato perdido).</li>
+					<li><strong><code>integer</code>:</strong> Representa números enteros (ej. <code>1L</code>,
+						<code>100L</code>, <code>-5L</code>). Se debe usar el sufijo <code>L</code> para asegurar que R
+						lo trate como entero; de lo contrario, podría interpretarlo como <code>double</code>.</li>
+					<li><strong><code>double</code>:</strong> (A menudo llamado <code>numeric</code> de forma genérica)
+						Representa números reales o de punto flotante, es decir, números que pueden tener decimales (ej.
+						<code>2.5</code>, <code>-3.14</code>, <code>10.0</code>, o incluso <code>10</code> si no se
+						especifica <code>L</code>).</li>
+					<li><strong><code>character</code>:</strong> Almacena cadenas de texto (ej. <code>"hola"</code>,
+						<code>'R es genial'</code>, <code>"ID_001"</code>).</li>
+					<li><strong><code>complex</code>:</strong> Para números complejos (ej. <code>1+2i</code>).</li>
+					<li><strong><code>raw</code>:</strong> Almacena bytes crudos (menos común en análisis de datos
+						general).</li>
+				</ul>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">
+					Los vectores <strong>lógicos</strong> son especialmente importantes en R. Se utilizan comúnmente
+					como resultado de comparaciones (ej. <code>edad > 30</code>, <code>nombre == "Ana"</code>) y son
+					fundamentales para la <strong>subselección de datos (subsetting/filtering)</strong> en vectores,
+					matrices y data frames. Por ejemplo, <code>mi_vector[mi_vector > 10]</code> seleccionará solo los
+					elementos mayores a 10. También controlan el flujo en estructuras como <code>if</code> y
+					<code>while</code>.
+				</p>
+				<p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Para una exploración más profunda de los
+					vectores y sus propiedades, consulta el capítulo sobre <a
+						href="https://adv-r.hadley.nz/vectors-chap.html" target="_blank"
+						class="text-[var(--link-color)] hover:underline font-semibold">Vectores Atómicos y Listas en
+						"Advanced R"</a> de Hadley Wickham.</p>
+
+				<div class="animation-status" id="vector-creation-status"></div>
+
+				<h4 class="dark:text-[var(--subheader-text-dark)] mt-4">Creación de Vectores con <code>c()</code>:</h4>
+				<p class="text-slate-700 dark:text-slate-300 mb-4">La función <code>c()</code> (combinar o concatenar)
+					es la forma más común de crear vectores atómicos:</p>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+					<div>
+						<p class="font-semibold text-slate-700 dark:text-slate-300">Vector Numérico
+							(<code>double</code>):</p>
+						<div id="numeric-vector-display" class="vector-display min-h-[60px]"></div>
+						<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1"
+							id="numeric-vector-code"></code>
+						<button class="action-button mt-2 w-full" onclick="createVectorDemo('numeric')">Crear Vector
+							Numérico</button>
+					</div>
+					<div>
+						<p class="font-semibold text-slate-700 dark:text-slate-300">Vector de Caracteres
+							(<code>character</code>):</p>
+						<div id="char-vector-display-main" class="vector-display min-h-[60px]"></div>
+						<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1"
+							id="char-vector-code"></code>
+						<button class="action-button mt-2 w-full" onclick="createVectorDemo('character')">Crear Vector
+							Caracteres</button>
+					</div>
+					<div>
+						<p class="font-semibold text-slate-700 dark:text-slate-300">Vector Lógico
+							(<code>logical</code>):</p>
+						<div id="logical-vector-display" class="vector-display min-h-[60px]"></div>
+						<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1"
+							id="logical-vector-code"></code>
+						<button class="action-button mt-2 w-full" onclick="createVectorDemo('logical')">Crear Vector
+							Lógico</button>
+					</div>
+				</div>
+
+				<h4 class="dark:text-[var(--subheader-text-dark)] mt-6">Operaciones Vectorizadas:</h4>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">Una gran ventaja de R es que las operaciones
+					aritméticas y lógicas se aplican elemento a elemento en los vectores, lo que se conoce como
+					"vectorización". Esto hace que el código sea más conciso y eficiente.</p>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">Ejemplo: Sumar 5 a cada elemento del vector numérico
+					creado anteriormente.</p>
+				<div id="vector-op-display" class="vector-display min-h-[60px]"></div>
+				<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1" id="vector-op-code"></code>
+				<button class="action-button mt-2" onclick="vectorizedOperationDemo()" id="btn-vector-op"
+					disabled>Realizar Operación (vector_num + 5)</button>
+				<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">*Nota: Primero debes hacer clic en
+					'Crear Vector Numérico' para habilitar esta operación.</p>
+
+				<h3 class="mt-8 dark:text-[var(--subheader-text-dark)]">Usos Comunes de los Vectores:</h3>
+				<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mt-2">
+					<li>Almacenar series de datos (ej. mediciones de un experimento, temperaturas diarias, nombres de
+						clientes).</li>
+					<li>Como columnas individuales dentro de un data frame.</li>
+					<li>Realizar cálculos matemáticos y estadísticos de forma eficiente (sumas, promedios, etc.).</li>
+					<li>Para la indexación y subselección de elementos en otras estructuras de datos.</li>
+					<li>Argumentos para funciones que esperan múltiples valores del mismo tipo.</li>
+				</ul>
+			</section>
+
+			<section class="datatype-comparison-card mt-8" id="dataframes-intro">
+				<h2>Data Frames en R</h2>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">Un Data Frame es la estructura de datos más utilizada
+					para el análisis de datos tabulares en R. Es esencialmente una lista de vectores de igual longitud,
+					donde cada vector representa una columna.</p>
+				<p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Los data frames son el análogo en R a una
+					tabla de una base de datos SQL o una hoja de cálculo. Para más detalles sobre su estructura y
+					manipulación, puedes consultar el capítulo sobre <a href="https://adv-r.hadley.nz/tibbles.html"
+						target="_blank" class="text-[var(--link-color)] hover:underline font-semibold">Tibbles (una
+						versión moderna de data frames) en "Advanced R"</a>.</p>
+				<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-4">
+					<li>Cada columna es un vector y, por lo tanto, homogénea en tipo.</li>
+					<li>Diferentes columnas pueden tener diferentes tipos de datos (heterogeneidad entre columnas).</li>
+					<li>Todas las columnas deben tener la <strong>misma longitud</strong> (mismo número de filas).</li>
+					<li>Poseen nombres de columna y, opcionalmente, nombres de fila.</li>
+				</ul>
+
+				<div class="animation-status" id="df-creation-status"></div>
+				<h4 class="dark:text-[var(--subheader-text-dark)] mt-4">Construcción de un Data Frame a partir de
+					Vectores (Personas y Salarios):</h4>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">Imagina que tenemos los siguientes vectores que
+					representan información sobre personas:</p>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+					<div>
+						<p class="font-semibold text-slate-700 dark:text-slate-300">Nombres (Carácter):</p>
+						<div id="df-vec-nombres" class="vector-display min-h-[40px] !p-2"></div>
+					</div>
+					<div>
+						<p class="font-semibold text-slate-700 dark:text-slate-300">Edades (Numérico):</p>
+						<div id="df-vec-edades" class="vector-display min-h-[40px] !p-2"></div>
+					</div>
+					<div>
+						<p class="font-semibold text-slate-700 dark:text-slate-300">Salarios (Numérico):</p>
+						<div id="df-vec-salarios" class="vector-display min-h-[40px] !p-2"></div>
+					</div>
+				</div>
+
+				<p class="text-slate-700 dark:text-slate-300 mb-2">Usamos la función <code>data.frame()</code> para
+					combinarlos en una estructura tabular:</p>
+				<div id="df-dynamic-construction" class="flex justify-center mb-4">
+					<table class="table-like" id="dynamic-dataframe-table">
+						<thead></thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1 text-center"
+					id="dynamic-df-code"></code>
+				<div class="text-center">
+					<button id="btn-create-dynamic-df" class="action-button mt-2"
+						onclick="createDynamicDataFrame()">Construir Data Frame de Personas</button>
+				</div>
+			</section>
+		</div>
+
+		<div id="estructurasTab" class="tab-content">
+			<section class="data-structure-card" id="matrix">
+				<h2>1. Matriz (Matrix)</h2>
+				<p class="text-slate-700 dark:text-slate-300 mb-4">Colección <strong>bidimensional</strong> de elementos
+					del <strong>MISMO tipo</strong>.</p>
+				<div class="animation-status" id="matrix-status"></div>
+				<div class="flex justify-center mb-4" id="matrix-viz-container">
+					<table class="table-like" id="matrix-table">
+						<caption>Matriz (3x2)</caption>
+						<thead>
+							<tr>
+								<th>Col1</th>
+								<th>Col2</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<p class="text-sm text-center text-slate-500 dark:text-slate-400 mb-4">Todos los elementos deben ser del
+					mismo tipo (ej. numérico).</p>
+				<button id="btn-create-matrix" class="create-button" onclick="createMatrixAnimation()">Crear
+					Matriz</button>
+				<button class="toggle-button" onclick="toggleDetails('details-matrix')">Mostrar/Ocultar
+					Detalles</button>
+				<div id="details-matrix" class="details">
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Características Clave:</h3>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1">
+						<li>Bidimensional (filas y columnas).</li>
+						<li>Homogénea: todos los elementos son del mismo tipo. Si se mezclan, R realiza coerción al tipo
+							más general.</li>
+						<li>Eficiente para operaciones de álgebra lineal.</li>
+					</ul>
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Cuándo Usarla:</h3>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1">
+						<li>Cálculos matemáticos (ej. multiplicación de matrices).</li>
+						<li>Datos tabulares homogéneos (ej. matriz de correlaciones, pixeles de imagen en escala de
+							grises).</li>
+						<li>Representación de grids o mapas de calor.</li>
+					</ul>
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Potencialidad:</h3>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1">
+						<li>Alta eficiencia en operaciones numéricas vectorizadas.</li>
+						<li>Base para muchos algoritmos estadísticos y de machine learning.</li>
+					</ul>
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Ejemplo en R:</h3>
+					<div class="code-block">
+						<pre>
+# Matriz numérica
+mi_matriz <- matrix(1:6, nrow = 3, ncol = 2)
+print(mi_matriz)
+#      [,1] [,2]
+# [1,]    1    4
+# [2,]    2    5
+# [3,]    3    6
+
+# Coerción: si intentas mezclar tipos
+matriz_forzada <- matrix(c("a", 1, "b", 2), nrow = 2)
+print(matriz_forzada) # Todos se convierten a caracteres
+#      [,1] [,2]
+# [1,] "a"  "b"
+# [2,] "1"  "2"
+</pre>
+					</div>
+				</div>
+			</section>
+
+			<section class="data-structure-card" id="array">
+				<h2>2. Array (Arreglo)</h2>
+				<p class="text-slate-700 dark:text-slate-300 mb-4">Generalización de una matriz
+					(<strong>multidimensional</strong>). Todos los elementos del <strong>MISMO tipo</strong>.</p>
+				<div class="animation-status" id="array-status"></div>
+				<p class="text-center font-semibold text-slate-700 dark:text-slate-300 mb-2">Array 3D (2 capas, 2 filas,
+					2 columnas)</p>
+				<div class="array-perspective-container mb-4" id="array-viz-container">
+					<div class="array-stack" id="array-stack-visual">
+					</div>
+				</div>
+				<p class="text-sm text-center text-slate-500 dark:text-slate-400 mb-4">Imagina "pilas" de matrices,
+					todas con el mismo tipo de dato.</p>
+				<button id="btn-create-array" class="create-button" onclick="createArrayAnimation()">Crear
+					Array</button>
+				<button class="toggle-button" onclick="toggleDetails('details-array')">Mostrar/Ocultar Detalles</button>
+				<div id="details-array" class="details">
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Características Clave:</h3>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1">
+						<li>Multidimensional (puede tener 1, 2, 3, o más dimensiones).</li>
+						<li>Homogénea: todos los elementos deben ser del mismo tipo.</li>
+						<li>Un vector es un array de 1D, una matriz es un array de 2D.</li>
+					</ul>
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Cuándo Usarlo:</h3>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1">
+						<li>Datos inherentemente multidimensionales y homogéneos.</li>
+						<li>Imágenes a color (ej., alto x ancho x 3 canales RGB).</li>
+						<li>Datos de series temporales de múltiples variables observadas en múltiples ubicaciones.</li>
+						<li>Resultados de simulaciones donde se varían múltiples parámetros.</li>
+						<li>Tensores en machine learning.</li>
+					</ul>
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Potencialidad:</h3>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1">
+						<li>Permite representar estructuras de datos complejas de forma natural.</li>
+						<li>Las operaciones se pueden aplicar a través de las dimensiones ("slicing", "dicing").</li>
+						<li>Útil en campos como el procesamiento de imágenes, física, y ciertos tipos de análisis
+							estadísticos avanzados.</li>
+					</ul>
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Ejemplo en R (General):</h3>
+					<div class="code-block">
+						<pre>
+# Array de 3 dimensiones (2 filas, 2 columnas, 2 "láminas")
+# Todos los elementos serán numéricos
+mi_array <- array(1:8, dim = c(2, 2, 2)) 
+print(mi_array)
+# , , 1  (Primera lámina)
+#      [,1] [,2]
+# [1,]    1    3
+# [2,]    2    4
+
+# , , 2  (Segunda lámina)
+#      [,1] [,2]
+# [1,]    5    7
+# [2,]    6    8
+</pre>
+					</div>
+					<h4 class="dark:text-[var(--subheader-text-dark)] mt-4">Caso de Uso Aplicado: Mini Imagen RGB</h4>
+					<p class="text-slate-700 dark:text-slate-300 mb-2">Un array de 3 dimensiones es ideal para
+						representar una imagen a color. Por ejemplo, una imagen de 2x2 píxeles con canales Rojo, Verde y
+						Azul (RGB):</p>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-2 ml-4">
+						<li>Dimensión 1: Alto de la imagen (número de filas de píxeles).</li>
+						<li>Dimensión 2: Ancho de la imagen (número de columnas de píxeles).</li>
+						<li>Dimensión 3: Canales de color (R, G, B), usualmente 3 capas.</li>
+					</ul>
+					<div class="code-block">
+						<pre>
+# Suponiendo una imagen muy pequeña de 2x2 píxeles
+# Los valores podrían ir de 0 a 255 para cada canal de color
+
+# Datos para los canales R, G, B (simplificado)
+# Capa 1: Canal Rojo
+# Píxel (1,1)=255, Píxel (1,2)=0
+# Píxel (2,1)=0,   Píxel (2,2)=128
+# Capa 2: Canal Verde
+# Píxel (1,1)=0,   Píxel (1,2)=255
+# Píxel (2,1)=128, Píxel (2,2)=0
+# Capa 3: Canal Azul
+# Píxel (1,1)=0,   Píxel (1,2)=0
+# Píxel (2,1)=255, Píxel (2,2)=128
+
+imagen_rgb <- array(
+  c(255,0,0,128,  # Canal Rojo (columna por columna)
+    0,255,128,0, # Canal Verde
+    0,0,255,128), # Canal Azul
+  dim = c(2, 2, 3), # 2 filas, 2 columnas, 3 capas de color
+  dimnames = list(
+    c("Fila1", "Fila2"), 
+    c("Col1", "Col2"), 
+    c("Rojo", "Verde", "Azul")
+  )
+)
+
+print(imagen_rgb)
+# , , Rojo
+#       Col1 Col2
+# Fila1  255    0
+# Fila2    0  128
+# 
+# , , Verde
+#       Col1 Col2
+# Fila1    0  255
+# Fila2  128    0
+# 
+# , , Azul
+#       Col1 Col2
+# Fila1    0    0
+# Fila2  255  128
+
+# Acceder al valor del canal Verde del píxel en Fila1, Col2:
+valor_verde_pixel_1_2 <- imagen_rgb["Fila1", "Col2", "Verde"]
+print(valor_verde_pixel_1_2) # Debería ser 255
+</pre>
+					</div>
+					<p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Esta estructura es fundamental en el
+						procesamiento de imágenes y visión por computadora.</p>
+				</div>
+			</section>
+
+			<section class="data-structure-card" id="tibbles">
+				<h2>3. Tibbles (del paquete <code>tibble</code>)</h2>
+				<p class="text-slate-700 dark:text-slate-300 mb-2">Los Tibbles son una reimaginación moderna de los data
+					frames en R, parte del <a href="https://www.tidyverse.org/" target="_blank"
+						class="text-[var(--link-color)] hover:underline font-semibold">Tidyverse</a>. Mantienen la
+					estructura fundamental de los data frames pero con algunas mejoras y comportamientos más
+					predecibles.</p>
+				<p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Puedes aprender mucho más sobre ellos en el
+					capítulo de <a href="https://r4ds.had.co.nz/tibbles.html" target="_blank"
+						class="text-[var(--link-color)] hover:underline font-semibold">Tibbles en "R for Data
+						Science"</a>.</p>
+
+				<h4 class="dark:text-[var(--subheader-text-dark)]">Ventajas Clave sobre Data Frames Base:</h4>
+				<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-3">
+					<li><strong>Mejor Impresión (<code>print</code>):</strong> Solo muestran las primeras 10 filas y las
+						columnas que caben en pantalla, junto con el tipo de cada columna. Esto evita inundar la consola
+						con datos grandes.</li>
+					<li><strong>No convierten strings a factores:</strong> Por defecto, las cadenas de caracteres se
+						mantienen como <code>character</code>, no se convierten automáticamente a <code>factor</code>
+						(<code>stringsAsFactors = FALSE</code> es el comportamiento implícito y no configurable).</li>
+					<li><strong>No usan nombres de fila (<code>rownames</code>):</strong> Fomentan el almacenamiento de
+						identificadores como una columna explícita en los datos.</li>
+					<li><strong>Subsetting más consistente:</strong> <code>[</code> siempre devuelve otro tibble,
+						incluso si se selecciona una sola columna. Para extraer un vector, se usa <code>[[</code> o
+						<code>$</code>.</li>
+					<li><strong>Evaluación perezosa de argumentos:</strong> Los argumentos de <code>tibble()</code> se
+						evalúan secuencialmente, permitiendo referenciar columnas recién creadas en la misma llamada.
+					</li>
+				</ul>
+
+				<h4 class="dark:text-[var(--subheader-text-dark)]">Ejemplo de Creación y Salida en R:</h4>
+				<div class="code-block">
+					<pre>
+# Primero, necesitarías instalar y cargar el paquete:
+# install.packages("tibble") # Solo una vez
+# library(tibble)
+
+# Creando un tibble
+mi_tibble <- tibble(
+  Nombre = c("Carlos", "Laura", "Pedro", "Sofia", "Ana", "Juan", "Maria", "Luis", "Elena", "David", "Isabel"),
+  Puntaje = c(85, 92, 78, 95, 88, 72, 90, 81, 93, 76, 89),
+  Activo = c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE)
+)
+
+print(mi_tibble)
+# # A tibble: 11 × 3
+#    Nombre  Puntaje Activo
+#    &lt;chr&gt;     &lt;dbl&gt; &lt;lgl&gt; 
+#  1 Carlos       85 TRUE  
+#  2 Laura        92 FALSE 
+#  3 Pedro        78 TRUE  
+#  4 Sofia        95 TRUE  
+#  5 Ana          88 FALSE 
+#  6 Juan         72 TRUE  
+#  7 Maria        90 TRUE  
+#  8 Luis         81 FALSE 
+#  9 Elena        93 TRUE  
+# 10 David        76 FALSE 
+# # ℹ 1 more row
+# # ℹ Use `print(n = ...)` to see more rows
+</pre>
+				</div>
+				<p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Nota cómo la salida del tibble es más
+					informativa y compacta que la de un data frame base, especialmente con más filas.</p>
+			</section>
+		</div>
+
+		<div id="tiposNumericosTab" class="tab-content">
+			<section class="numeric-type-card" id="numeric-integer-double">
+				<h2>Tipos de Datos Numéricos en R</h2>
+				<p class="text-slate-700 dark:text-slate-300 mb-6">Comprender la diferencia entre <code>integer</code>,
+					<code>numeric</code> y <code>double</code> es clave para el manejo eficiente de datos y la precisión
+					en R.</p>
+				<div>
+					<h3 class="dark:text-[var(--subheader-text-dark)]">1. <code>integer</code> (Entero)</h3>
+					<p class="text-slate-600 dark:text-slate-400 mb-2">Representa números enteros (sin parte decimal,
+						ej: -3, 0, 5, 100).</p>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-3">
+						<li>Ocupan menos memoria que los números <code>numeric</code> de punto flotante.</li>
+						<li>Para asegurar que un número se trate como <code>integer</code>, se añade el sufijo
+							<code>L</code>.</li>
+					</ul>
+					<div class="code-block">
+						<pre>
+# Ejemplo de Integer
+x <- 10L
+print(x)         # Muestra: 10
+class(x)       # Devuelve: "integer"
+typeof(x)      # Devuelve: "integer" (cómo R lo almacena internamente)
+is.integer(x)  # Devuelve: TRUE
+is.numeric(x)  # Devuelve: TRUE (porque un integer es un tipo de numeric)
+
+# Si no usas L, R por defecto lo trata como 'numeric' (double) incluso si es un entero:
+y <- 10
+class(y)       # Devuelve: "numeric"
+typeof(y)      # Devuelve: "double"
+is.integer(y)  # Devuelve: FALSE
+</pre>
+					</div>
+				</div>
+
+				<div class="mt-6">
+					<h3 class="dark:text-[var(--subheader-text-dark)]">2. <code>numeric</code> / <code>double</code>
+						(Numérico / Doble Precisión)</h3>
+					<p class="text-slate-600 dark:text-slate-400 mb-2">Representa números reales, que pueden tener una
+						parte decimal (ej: -2.5, 0.0, 3.14159). En R, el tipo <code>numeric</code> es, por defecto, de
+						"doble precisión" (<code>double</code>).</p>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-3">
+						<li><code>double</code> es el término técnico más preciso para cómo R almacena los números de
+							punto flotante. "Doble precisión" significa que se utilizan más bits (generalmente 64 bits)
+							para almacenar el número, lo que permite un rango más amplio de valores y mayor precisión
+							para los decimales.</li>
+						<li><code>numeric</code> es el nombre de la clase que R le da a estos números.</li>
+						<li>Es el tipo de dato numérico más común y general en R.</li>
+					</ul>
+					<div class="code-block">
+						<pre>
+# Ejemplo de Numeric/Double
+a <- 3.14159
+print(a)       # Muestra: 3.14159
+class(a)     # Devuelve: "numeric"
+typeof(a)    # Devuelve: "double"
+is.double(a) # Devuelve: TRUE (o is.numeric(a))
+
+b <- 100.0 # También es numeric (double)
+class(b)     # Devuelve: "numeric"
+typeof(b)    # Devuelve: "double"
+</pre>
+					</div>
+				</div>
+
+				<div class="mt-6">
+					<h3 class="dark:text-[var(--subheader-text-dark)]">Cuándo Usar Cada Uno:</h3>
+					<table class="table-like w-full mt-2">
+						<thead>
+							<tr>
+								<th>Tipo</th>
+								<th>Descripción</th>
+								<th>Cuándo Usar</th>
+								<th>Sufijo en R</th>
+								<th><code>typeof()</code></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="font-semibold cell-integer"><code>integer</code></td>
+								<td class="text-slate-700 dark:text-slate-300">Números enteros exactos.</td>
+								<td class="text-slate-700 dark:text-slate-300">Conteos, índices, IDs, cuando la memoria
+									es crítica y los datos son estrictamente enteros sin decimales.</td>
+								<td class="text-slate-700 dark:text-slate-300"><code>L</code> (ej. <code>5L</code>,
+									<code>-2L</code>)</td>
+								<td class="text-slate-700 dark:text-slate-300"><code>"integer"</code></td>
+							</tr>
+							<tr>
+								<td class="font-semibold cell-double"><code>numeric</code> (<code>double</code>)</td>
+								<td class="text-slate-700 dark:text-slate-300">Números reales, con o sin decimales.
+									Mayor precisión y rango.</td>
+								<td class="text-slate-700 dark:text-slate-300">Por defecto para cualquier número.
+									Cálculos científicos, mediciones, datos financieros, la mayoría de las situaciones.
+								</td>
+								<td class="text-slate-700 dark:text-slate-300">Ninguno (ej. <code>5</code>,
+									<code>3.14</code>)</td>
+								<td class="text-slate-700 dark:text-slate-300"><code>"double"</code></td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="text-sm text-slate-500 dark:text-slate-400 mt-3">
+						<strong>Nota Importante:</strong> La función <code>class()</code> te dice cómo R ve el objeto en
+						términos de su sistema de objetos (orientado a objetos). <code>typeof()</code> te da una
+						indicación más cercana al tipo de almacenamiento fundamental del objeto en la memoria. Para la
+						mayoría de los propósitos prácticos, la distinción entre <code>numeric</code> y
+						<code>double</code> no es crítica, ya que R maneja las conversiones de manera transparente. Sin
+						embargo, <code>integer</code> sí tiene implicaciones de almacenamiento y precisión.
+					</p>
+				</div>
+			</section>
+		</div>
+
+		<div id="factorCharTab" class="tab-content">
+			<section class="datatype-comparison-card" id="factor-character-comparison">
+				<h2>Factor vs. Character en R</h2>
+				<p class="text-slate-700 dark:text-slate-300 mb-4">Ambos se usan para datos textuales, pero tienen
+					diferencias fundamentales, especialmente para el análisis estadístico.</p>
+
+				<div>
+					<h4 class="dark:text-[var(--subheader-text-dark)]">1. <code>character</code> (Cadena de Caracteres)
+					</h4>
+					<p class="text-slate-600 dark:text-slate-400 mb-2">Almacena secuencias de texto tal cual. Es el tipo
+						de dato más directo para texto.</p>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-3">
+						<li><strong>Flexibilidad:</strong> Puede contener cualquier texto.</li>
+						<li><strong>Almacenamiento:</strong> Guarda cada cadena de forma individual.</li>
+						<li><strong>Uso común:</strong> Nombres propios, respuestas a preguntas abiertas en encuestas,
+							IDs textuales únicos, cualquier texto que no represente una categoría fija.</li>
+					</ul>
+					<div class="code-block">
+						<pre>
+# Vector de caracteres: Opiniones sobre un servicio
+opiniones_servicio <- c("Bueno", "Excelente", "Bueno", "Regular")
+print(opiniones_servicio)
+# [1] "Bueno"     "Excelente" "Bueno"     "Regular"
+class(opiniones_servicio)
+# [1] "character"
+</pre>
+					</div>
+				</div>
+
+				<div class="mt-6">
+					<h4 class="dark:text-[var(--subheader-text-dark)]">2. <code>factor</code> (Factor)</h4>
+					<p class="text-slate-600 dark:text-slate-400 mb-2">Diseñado para representar datos categóricos con
+						un número limitado y conocido de categorías o "niveles" (levels).</p>
+					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-3">
+						<li><strong>Categorías Fijas:</strong> Los factores tienen un conjunto predefinido de niveles.
+							Ideal para variables como "género", "grupo de tratamiento", "nivel educativo".</li>
+						<li><strong>Almacenamiento Eficiente:</strong> Internamente, R almacena los factores como
+							enteros (índices de sus niveles), lo que puede ser más eficiente en memoria si hay muchas
+							repeticiones de pocas categorías.</li>
+						<li><strong>Importancia en Modelado:</strong> Muchos modelos estadísticos en R (ej.
+							<code>lm()</code>, <code>glm()</code>, ANOVA) tratan los factores de manera especial para
+							crear variables dummy o contrastes adecuados.</li>
+						<li><strong>Orden:</strong> Los factores pueden ser ordenados (ordinales, ej. "Bajo" < "Medio"
+								< "Alto" ) o no ordenados (nominales).</li>
+					</ul>
+					<div class="code-block">
+						<pre>
+# Crear un factor para niveles de satisfacción
+satisfaccion <- c("Satisfecho", "Neutral", "Insatisfecho", "Satisfecho")
+factor_satisfaccion <- factor(satisfaccion)
+print(factor_satisfaccion)
+# [1] Satisfecho   Neutral      Insatisfecho Satisfecho  
+# Levels: Insatisfecho Neutral Satisfecho (orden alfabético por defecto)
+
+class(factor_satisfaccion)
+# [1] "factor"
+levels(factor_satisfaccion) # Muestra los niveles únicos
+# [1] "Insatisfecho" "Neutral"      "Satisfecho"  
+as.integer(factor_satisfaccion) # Muestra cómo se almacenan internamente
+# [1] 3 2 1 3 (según el orden de los niveles)
+
+# Factor ordenado (ordinal)
+niveles_educativos <- c("Primaria", "Secundaria", "Universidad", "Secundaria")
+factor_educ_ord <- factor(niveles_educativos,
+                          levels = c("Primaria", "Secundaria", "Universidad"),
+                          ordered = TRUE)
+print(factor_educ_ord)
+# [1] Primaria    Secundaria  Universidad Secundaria
+# Levels: Primaria < Secundaria < Universidad
+factor_educ_ord[1] < factor_educ_ord[3] # Comprobación de orden
+# [1] TRUE
+</pre>
+					</div>
+				</div>
+
+				<h3 class="mt-8 dark:text-[var(--subheader-text-dark)]">Diferencias Clave y Cuándo Usar Cada Uno</h3>
+				<table class="table-like w-full mt-2">
+					<thead>
+						<tr>
+							<th>Característica</th>
+							<th><code>character</code></th>
+							<th><code>factor</code></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="font-semibold text-slate-700 dark:text-slate-300">Propósito Principal</td>
+							<td class="text-slate-700 dark:text-slate-300">Almacenar texto genérico.</td>
+							<td class="text-slate-700 dark:text-slate-300">Representar variables categóricas con niveles
+								definidos.</td>
+						</tr>
+						<tr>
+							<td class="font-semibold text-slate-700 dark:text-slate-300">Niveles (Levels)</td>
+							<td class="text-slate-700 dark:text-slate-300">No tiene concepto de "niveles" predefinidos.
+							</td>
+							<td class="text-slate-700 dark:text-slate-300">Tiene un conjunto fijo de niveles. Los
+								valores deben pertenecer a estos niveles.</td>
+						</tr>
+						<tr>
+							<td class="font-semibold text-slate-700 dark:text-slate-300">Almacenamiento Interno</td>
+							<td class="text-slate-700 dark:text-slate-300">Como cadenas de texto.</td>
+							<td class="text-slate-700 dark:text-slate-300">Como enteros que mapean a los niveles (más
+								eficiente para datos categóricos repetitivos).</td>
+						</tr>
+						<tr>
+							<td class="font-semibold text-slate-700 dark:text-slate-300">Modelado Estadístico</td>
+							<td class="text-slate-700 dark:text-slate-300">Puede necesitar conversión explícita o ser
+								tratado como texto simple.</td>
+							<td class="text-slate-700 dark:text-slate-300">Tratado automáticamente como variable
+								categórica, generando variables dummy/contrastes.</td>
+						</tr>
+						<tr>
+							<td class="font-semibold text-slate-700 dark:text-slate-300">Orden</td>
+							<td class="text-slate-700 dark:text-slate-300">Sin orden inherente (solo alfabético si se
+								ordena).</td>
+							<td class="text-slate-700 dark:text-slate-300">Puede ser nominal (sin orden) u ordinal (con
+								orden definido, ej. "Bajo", "Medio", "Alto").</td>
+						</tr>
+						<tr>
+							<td class="font-semibold text-slate-700 dark:text-slate-300">Añadir Nuevos Valores</td>
+							<td class="text-slate-700 dark:text-slate-300">Fácil, se añade la nueva cadena.</td>
+							<td class="text-slate-700 dark:text-slate-300">Si un nuevo valor no está en los niveles
+								definidos, se convierte en <code>&lt;NA&gt;</code> (dato perdido) a menos que se añada
+								explícitamente el nivel.</td>
+						</tr>
+						<tr>
+							<td class="font-semibold text-slate-700 dark:text-slate-300">Cuándo Usar</td>
+							<td class="text-slate-700 dark:text-slate-300">IDs únicos, texto libre, descripciones,
+								cuando no hay categorías fijas o el orden no importa para el análisis.</td>
+							<td class="text-slate-700 dark:text-slate-300">Variables categóricas (género, grupos de
+								tratamiento, tallas), variables ordinales (nivel de satisfacción, nivel educativo),
+								cuando se usarán en modelos estadísticos que requieren variables categóricas.</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="text-sm text-slate-500 dark:text-slate-400 mt-3">
+					<strong>Importante:</strong> En R >= 4.0.0, el comportamiento por defecto de funciones como
+					<code>data.frame()</code> es <code>stringsAsFactors = FALSE</code>, manteniendo los caracteres como
+					tal. Esto es generalmente preferido para evitar conversiones automáticas no deseadas a factor. Se
+					recomienda convertir explícitamente a factor cuando sea necesario. Para más información sobre
+					factores, visita el capítulo de <a href="https://r4ds.had.co.nz/factors.html" target="_blank"
+						class="text-[var(--link-color)] hover:underline font-semibold">Factors en "R for Data
+						Science"</a> o el de <a href="https://adv-r.hadley.nz/factors.html" target="_blank"
+						class="text-[var(--link-color)] hover:underline font-semibold">Factors en "Advanced R"</a>.
+				</p>
+
+				<h3 class="mt-8 dark:text-[var(--subheader-text-dark)]">Visualización Dinámica: Creación de un Factor
+				</h3>
+				<div class="animation-status" id="factor-char-status"></div>
+
+				<h4 class="dark:text-[var(--subheader-text-dark)]">Paso 1: Vector de Caracteres Original (Niveles de
+					Satisfacción)</h4>
+				<div id="char-vector-display" class="vector-display"></div>
+				<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1" id="char-code-display"></code>
+				<button id="btn-show-char" class="action-button mt-2">Mostrar Vector Character</button>
+
+				<h4 class="mt-4 dark:text-[var(--subheader-text-dark)]">Paso 2: Convertir a Factor y Ver Niveles</h4>
+				<div id="factor-conversion-display">
+					<p class="text-slate-600 dark:text-slate-400">Al convertir a factor con <code>factor()</code>, R
+						identifica los valores únicos como "niveles". Con <code>levels()</code> podemos verlos.</p>
+					<div id="factor-vector-display" class="vector-display mt-2"></div>
+					<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1" id="factor-code-display"></code>
+					<div id="factor-levels-display" class="levels-display hidden">
+						<strong>Niveles (Levels) del Factor (obtenidos con <code>levels()</code>):</strong>
+						<div id="levels-tags-container" class="vector-display"></div>
+						<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1"
+							id="levels-code-display"></code>
+						<p class="text-slate-600 dark:text-slate-400 mt-2">Internamente, R los almacena como enteros
+							(ej. con <code>as.integer()</code>):</p>
+						<div id="factor-integer-display" class="vector-display mt-1"></div>
+						<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1"
+							id="integer-code-display"></code>
+					</div>
+				</div>
+				<button id="btn-convert-to-factor" class="action-button mt-2" disabled>Convertir a Factor</button>
+
+				<h4 class="mt-6 dark:text-[var(--subheader-text-dark)]">Paso 3: ¿Qué pasa al añadir un nuevo valor no
+					existente en los niveles?</h4>
+				<div id="add-new-value-display" class="mt-2">
+					<p class="text-slate-600 dark:text-slate-400 mb-2">Intentemos añadir "Muy Satisfecho" (un valor que
+						no es un nivel actual) al vector y al factor:</p>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div>
+							<p class="font-semibold text-slate-700 dark:text-slate-300">Nuevo Vector Character:</p>
+							<div id="char-vector-new-display" class="vector-display"></div>
+							<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1"
+								id="char-new-code-display"></code>
+						</div>
+						<div>
+							<p class="font-semibold text-slate-700 dark:text-slate-300">Nuevo Vector Factor (¡Ojo!):</p>
+							<div id="factor-vector-new-display" class="vector-display"></div>
+							<code class="text-sm text-slate-500 dark:text-slate-400 block mt-1"
+								id="factor-new-code-display"></code>
+							<p id="factor-na-note" class="text-sm text-red-500 mt-1 hidden">"Muy Satisfecho" se
+								convierte en &lt;NA&gt; porque no es un nivel existente. Para añadirlo, primero se deben
+								actualizar los niveles del factor (ej.
+								<code>levels(mi_factor) <- c(levels(mi_factor), "Muy Satisfecho")</code>).</p>
+						</div>
+					</div>
+				</div>
+				<button id="btn-add-new-value" class="action-button mt-2" disabled>Añadir "Muy Satisfecho"</button>
+			</section>
+		</div>
+	</main>
+
+	<footer class="text-center mt-12 py-6 border-t border-[var(--border-light)]">
+		<p class="text-slate-600 dark:text-slate-400">Visualización interactiva de estructuras y tipos de datos en R.
+		</p>
+	</footer>
+
+	<script src="js/script.js"></script>
+</body>
+
+</html>
