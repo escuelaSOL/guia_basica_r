@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Visualización Avanzada: Estructuras y Tipos de Datos en R</title>
+	<title>Estructuras y Tipos de Datos en R</title>
 	<script src="https://cdn.tailwindcss.com"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/style.css">
@@ -13,8 +13,8 @@
 <body class="p-4 md:p-8">
 
 	<header class="text-center mb-6">
-		<h1 class="text-3xl md:text-4xl font-bold">Visualización Avanzada: Estructuras y Tipos de Datos en R</h1>
-		<p class="text-lg text-slate-600 dark:text-slate-400 mt-2">Una guía interactiva y experta.</p>
+		<h1 class="text-3xl md:text-4xl font-bold">Estructuras y Tipos de Datos en R</h1>
+		<p class="text-lg text-slate-600 dark:text-slate-400 mt-2">Una guía inicial.</p>
 	</header>
 
 	<div
@@ -50,16 +50,20 @@
 				</p>
 				<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-2 ml-4">
 					<li><strong><code>logical</code>:</strong> Contiene valores booleanos (<code>TRUE</code>,
-						<code>FALSE</code>) y también <code>NA</code> (Not Available - dato perdido).</li>
+						<code>FALSE</code>) y también <code>NA</code> (Not Available - dato perdido).
+					</li>
 					<li><strong><code>integer</code>:</strong> Representa números enteros (ej. <code>1L</code>,
 						<code>100L</code>, <code>-5L</code>). Se debe usar el sufijo <code>L</code> para asegurar que R
-						lo trate como entero; de lo contrario, podría interpretarlo como <code>double</code>.</li>
+						lo trate como entero; de lo contrario, podría interpretarlo como <code>double</code>.
+					</li>
 					<li><strong><code>double</code>:</strong> (A menudo llamado <code>numeric</code> de forma genérica)
 						Representa números reales o de punto flotante, es decir, números que pueden tener decimales (ej.
 						<code>2.5</code>, <code>-3.14</code>, <code>10.0</code>, o incluso <code>10</code> si no se
-						especifica <code>L</code>).</li>
+						especifica <code>L</code>).
+					</li>
 					<li><strong><code>character</code>:</strong> Almacena cadenas de texto (ej. <code>"hola"</code>,
-						<code>'R es genial'</code>, <code>"ID_001"</code>).</li>
+						<code>'R es genial'</code>, <code>"ID_001"</code>).
+					</li>
 					<li><strong><code>complex</code>:</strong> Para números complejos (ej. <code>1+2i</code>).</li>
 					<li><strong><code>raw</code>:</strong> Almacena bytes crudos (menos común en análisis de datos
 						general).</li>
@@ -400,7 +404,8 @@ print(valor_verde_pixel_1_2) # Debería ser 255
 						identificadores como una columna explícita en los datos.</li>
 					<li><strong>Subsetting más consistente:</strong> <code>[</code> siempre devuelve otro tibble,
 						incluso si se selecciona una sola columna. Para extraer un vector, se usa <code>[[</code> o
-						<code>$</code>.</li>
+						<code>$</code>.
+					</li>
 					<li><strong>Evaluación perezosa de argumentos:</strong> Los argumentos de <code>tibble()</code> se
 						evalúan secuencialmente, permitiendo referenciar columnas recién creadas en la misma llamada.
 					</li>
@@ -448,7 +453,8 @@ print(mi_tibble)
 				<h2>Tipos de Datos Numéricos en R</h2>
 				<p class="text-slate-700 dark:text-slate-300 mb-6">Comprender la diferencia entre <code>integer</code>,
 					<code>numeric</code> y <code>double</code> es clave para el manejo eficiente de datos y la precisión
-					en R.</p>
+					en R.
+				</p>
 				<div>
 					<h3 class="dark:text-[var(--subheader-text-dark)]">1. <code>integer</code> (Entero)</h3>
 					<p class="text-slate-600 dark:text-slate-400 mb-2">Representa números enteros (sin parte decimal,
@@ -456,7 +462,8 @@ print(mi_tibble)
 					<ul class="list-disc list-inside text-slate-700 dark:text-slate-300 space-y-1 mb-3">
 						<li>Ocupan menos memoria que los números <code>numeric</code> de punto flotante.</li>
 						<li>Para asegurar que un número se trate como <code>integer</code>, se añade el sufijo
-							<code>L</code>.</li>
+							<code>L</code>.
+						</li>
 					</ul>
 					<div class="code-block">
 						<pre>
@@ -526,7 +533,8 @@ typeof(b)    # Devuelve: "double"
 								<td class="text-slate-700 dark:text-slate-300">Conteos, índices, IDs, cuando la memoria
 									es crítica y los datos son estrictamente enteros sin decimales.</td>
 								<td class="text-slate-700 dark:text-slate-300"><code>L</code> (ej. <code>5L</code>,
-									<code>-2L</code>)</td>
+									<code>-2L</code>)
+								</td>
 								<td class="text-slate-700 dark:text-slate-300"><code>"integer"</code></td>
 							</tr>
 							<tr>
@@ -537,7 +545,8 @@ typeof(b)    # Devuelve: "double"
 									Cálculos científicos, mediciones, datos financieros, la mayoría de las situaciones.
 								</td>
 								<td class="text-slate-700 dark:text-slate-300">Ninguno (ej. <code>5</code>,
-									<code>3.14</code>)</td>
+									<code>3.14</code>)
+								</td>
 								<td class="text-slate-700 dark:text-slate-300"><code>"double"</code></td>
 							</tr>
 						</tbody>
@@ -595,7 +604,8 @@ class(opiniones_servicio)
 							repeticiones de pocas categorías.</li>
 						<li><strong>Importancia en Modelado:</strong> Muchos modelos estadísticos en R (ej.
 							<code>lm()</code>, <code>glm()</code>, ANOVA) tratan los factores de manera especial para
-							crear variables dummy o contrastes adecuados.</li>
+							crear variables dummy o contrastes adecuados.
+						</li>
 						<li><strong>Orden:</strong> Los factores pueden ser ordenados (ordinales, ej. "Bajo" < "Medio"
 								< "Alto" ) o no ordenados (nominales).</li>
 					</ul>
@@ -750,7 +760,8 @@ factor_educ_ord[1] < factor_educ_ord[3] # Comprobación de orden
 							<p id="factor-na-note" class="text-sm text-red-500 mt-1 hidden">"Muy Satisfecho" se
 								convierte en &lt;NA&gt; porque no es un nivel existente. Para añadirlo, primero se deben
 								actualizar los niveles del factor (ej.
-								<code>levels(mi_factor) <- c(levels(mi_factor), "Muy Satisfecho")</code>).</p>
+								<code>levels(mi_factor) <- c(levels(mi_factor), "Muy Satisfecho")</code>).
+							</p>
 						</div>
 					</div>
 				</div>
@@ -760,7 +771,7 @@ factor_educ_ord[1] < factor_educ_ord[3] # Comprobación de orden
 	</main>
 
 	<footer class="text-center mt-12 py-6 border-t border-[var(--border-light)]">
-		<p class="text-slate-600 dark:text-slate-400">Visualización interactiva de estructuras y tipos de datos en R.
+		<p class="text-slate-600 dark:text-slate-400">Elaborado por la Escuela de Datos 2025 - Fundación SOL.
 		</p>
 	</footer>
 
