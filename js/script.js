@@ -508,7 +508,7 @@ async function vectorizedOperationDemo() {
 // Data para el ejemplo de Personas y Salarios
 const dfVecNombresData = ["Ana", "Luis", "Eva", "Juan"];
 const dfVecEdadesData = [28, 34, 22, 45];
-const dfVecSalariosData = [2500.75, 3200.50, 1850.00, 4000.20];
+const dfVecSalariosData = [510.000, 583.000, 850.000, 490.000];
 
 
 function initializeDynamicDataFrameDemo() {
