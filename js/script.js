@@ -118,7 +118,7 @@ async function createMatrixAnimation() {
 		for (let j = 0; j < matrixData[i].length; j++) {
 			const cell = matrixTableBody.rows[i].cells[j];
 			cell.textContent = matrixData[i][j];
-			cell.classList.add('cell-animated-ظهور');
+			cell.classList.add('cell-animated-aparicion');
 			setTimeout(() => {
 				cell.style.opacity = '1';
 				cell.style.transform = 'scale(1) rotate(0deg)';
@@ -167,7 +167,7 @@ async function createAndAnimateLayerTable(layerData, parentElement, initialTrans
 		for (let j = 0; j < layerData[i].length; j++) {
 			const cell = tbody.rows[i].cells[j];
 			cell.textContent = layerData[i][j];
-			cell.classList.add('cell-animated-ظهور');
+			cell.classList.add('cell-animated-aparicion');
 			setTimeout(() => {
 				cell.style.opacity = '1';
 				cell.style.transform = 'scale(1) rotate(0deg)';
@@ -492,7 +492,7 @@ async function vectorizedOperationDemo() {
 	resultVector.forEach((val) => {
 		const el = document.createElement('div');
 		el.textContent = val;
-		el.classList.add('vector-element', 'cell-numeric', 'cell-animated-ظهور');
+		el.classList.add('vector-element', 'cell-numeric', 'cell-animated-aparicion');
 		opDisplay.appendChild(el);
 		setTimeout(() => {
 			el.style.opacity = '1';
@@ -557,7 +557,7 @@ async function createDynamicDataFrame() {
         <code># En R:</code><br>
         <code>nombres &lt;- c("${dfVecNombresData.join('", "')}")</code><br>
         <code>edades &lt;- c(${dfVecEdadesData.join(', ')})</code><br>
-        <code>salarios &lt;- c(${dfVecSalariosData.map(s => s.toFixed(2)).join(', ')})</code><br>
+        <code>salarios &lt;- c(${dfVecSalariosData.map(s => s.toFixed(3)).join(', ')})</code><br>
         <code>personas_df &lt;- data.frame(Nombre = nombres, Edad = edades, Salario = salarios)</code>
     `;
 
@@ -585,14 +585,14 @@ async function createDynamicDataFrame() {
 		const rowData = [
 			{ value: dfVecNombresData[i], class: 'cell-character' },
 			{ value: dfVecEdadesData[i], class: 'cell-numeric' },
-			{ value: dfVecSalariosData[i].toFixed(2), class: 'cell-numeric' }
+			{ value: dfVecSalariosData[i].toFixed(3), class: 'cell-numeric' }
 		];
 
 		let cellDelay = 0;
 		rowData.forEach(data => {
 			const cell = row.insertCell();
 			cell.textContent = data.value;
-			cell.classList.add(data.class, 'cell-animated-ظهور');
+			cell.classList.add(data.class, 'cell-animated-aparicion');
 			setTimeout(() => {
 				cell.style.opacity = '1';
 				cell.style.transform = 'scale(1) rotate(0deg)';
